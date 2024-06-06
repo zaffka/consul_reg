@@ -1,0 +1,17 @@
+services:
+  consul:
+    image: docker.io/consul:1.15
+    container_name: consul
+    ports:
+      - '8500:8500/tcp'
+      - '8600:8600/udp'
+      - '8600:8600/tcp'
+  test-service:
+    container_name: test-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CONSUL_HTTP_ADDR=consul:8500
+    command: ["./test-service"]
+    restart: on-failure
